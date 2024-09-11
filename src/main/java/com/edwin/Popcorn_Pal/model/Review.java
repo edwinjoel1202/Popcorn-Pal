@@ -4,31 +4,37 @@
  */
 package com.edwin.Popcorn_Pal.model;
 
-/**
- *
- * @author edwin
- */
-
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
 
+/**
+ *
+ * @author edwin
+ */
+
 @Entity
-@Table(name = "User")
+@Table(name = "Review")
 @Getter
 @Setter
-public class User {
+public class Review {
+    
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID userId;
-    
-    private String username;
-    
-    private String email;
-    
-    private String password;
-    
+    private UUID reviewId;
+
+    @ManyToOne
+    @JoinColumn(name = "movieId")
+    private Movie movie;
+
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private User user;
+
+    private int rating;
+
+    private String reviewText;
+
     private LocalDateTime createdAt = LocalDateTime.now();
 }

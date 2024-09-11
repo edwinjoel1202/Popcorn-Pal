@@ -5,6 +5,7 @@
 package com.edwin.Popcorn_Pal.model;
 
 import jakarta.persistence.*;
+import java.util.Set;
 import lombok.Getter;
 import lombok.Setter;
 
@@ -30,5 +31,8 @@ public class Movie {
     
     private String posterUrl;
     
-    private String description; 
+    private String description;
+    
+    @ManyToMany(mappedBy = "movies")
+    private Set<Actor> actors;
 }

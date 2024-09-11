@@ -4,6 +4,11 @@
  */
 package com.edwin.Popcorn_Pal.model;
 
+/**
+ *
+ * @author edwin
+ */
+
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;

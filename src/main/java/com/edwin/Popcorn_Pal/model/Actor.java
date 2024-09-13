@@ -23,6 +23,7 @@ public class Actor
     @Id
     private int actorId;
     
+    @Column
     private String name;
     
     private String profilePicture;

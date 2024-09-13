@@ -22,6 +22,7 @@ import lombok.Setter;
 public class Review {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID reviewId;
 
     @ManyToOne
@@ -32,9 +33,12 @@ public class Review {
     @JoinColumn(name = "userId")
     private User user;
 
+    @Column(nullable = false)
     private int rating;
 
+    @Column
     private String reviewText;
 
+    @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }

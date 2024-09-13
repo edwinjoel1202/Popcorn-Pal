@@ -25,12 +25,16 @@ public class Movie {
     @Id
     private int movieId;
     
+    @Column(nullable = false)
     private String title;
     
+    @Column
     private String releaseDate;
     
+    @Column
     private String posterUrl;
     
+    @Column
     private String description;
     
     @ManyToMany(mappedBy = "movies")

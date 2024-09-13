@@ -26,6 +26,7 @@ public class Actor
     @Column
     private String name;
     
+    @Column
     private String profilePicture;
     
     @ManyToMany

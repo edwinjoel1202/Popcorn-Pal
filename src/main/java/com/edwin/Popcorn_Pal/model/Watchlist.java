@@ -30,5 +30,6 @@ public class Watchlist {
     @JoinColumn(name = "movie_id")
     private Movie movie;
 
+    @Column(nullable = false)
     private LocalDateTime addedAt = LocalDateTime.now();
 }

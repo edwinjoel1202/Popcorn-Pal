@@ -11,6 +11,7 @@ package com.edwin.Popcorn_Pal.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
@@ -32,6 +33,14 @@ public class User {
     
     @Column(nullable = false)
     private String password;
+    
+    @ManyToMany
+    @JoinTable(
+        name = "user_watchlist",
+        joinColumns = @JoinColumn(name = "user_id"),
+        inverseJoinColumns = @JoinColumn(name = "movie_id")
+    )
+    private List<Movie> watchlist;
     
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();

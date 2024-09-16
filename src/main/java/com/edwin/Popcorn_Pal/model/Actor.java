@@ -14,26 +14,22 @@ import lombok.Setter;
  * @author edwin
  */
 @Entity
-@Table(name = "Actor")
+@Table(name = "actors")
 @Getter
 @Setter
 public class Actor 
 {
     
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int actorId;
-    
-    @Column
+
+    @Column(nullable = false)
     private String name;
-    
+
     @Column
     private String profilePicture;
-    
-    @ManyToMany
-    @JoinTable(
-            name = "Movie_actors",
-            joinColumns = @JoinColumn(name = "actorId"),
-            inverseJoinColumns = @JoinColumn(name = "movieId")
-    )
+
+    @ManyToMany(mappedBy = "actors")
     private Set<Movie> movies;
 }

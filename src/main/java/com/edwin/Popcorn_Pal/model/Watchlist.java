@@ -13,21 +13,23 @@ import lombok.Setter;
  *
  * @author edwin
  */
+
 @Entity
-@Table(name = "Watchlist")
+@Table(name = "watchlist")
 @Getter
 @Setter
 public class Watchlist {
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID watchlistId;
 
     @ManyToOne
-    @JoinColumn(name = "user_id")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @ManyToOne
-    @JoinColumn(name = "movie_id")
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
     @Column(nullable = false)

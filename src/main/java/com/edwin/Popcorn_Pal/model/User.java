@@ -17,31 +17,35 @@ import lombok.Getter;
 import lombok.Setter;
 
 @Entity
-@Table(name = "\"User\"")
+@Table(name = "users")
 @Getter
 @Setter
 public class User {
+    
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID userId;
-    
+
     @Column(nullable = false, unique = true)
     private String username;
-    
+
     @Column(nullable = false, unique = true)
     private String email;
-    
+
     @Column(nullable = false)
     private String password;
-    
+
     @ManyToMany
     @JoinTable(
-        name = "user_watchlist",
-        joinColumns = @JoinColumn(name = "user_id"),
+        name = "user_watchlist", 
+        joinColumns = @JoinColumn(name = "user_id"), 
         inverseJoinColumns = @JoinColumn(name = "movie_id")
     )
     private List<Movie> watchlist;
-    
+
+    @OneToMany(mappedBy = "user", cascade = CascadeType.ALL)
+    private List<Review> reviews;
+
     @Column(nullable = false)
     private LocalDateTime createdAt = LocalDateTime.now();
 }

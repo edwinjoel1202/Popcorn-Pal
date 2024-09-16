@@ -4,8 +4,8 @@
  */
 package com.edwin.Popcorn_Pal.service;
 
-import com.edwin.Popcorn_Pal.model.User;
-import com.edwin.Popcorn_Pal.repository.UserRepository;
+import com.edwin.Popcorn_Pal.model.Review;
+import com.edwin.Popcorn_Pal.repository.ReviewRepository;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
@@ -20,24 +20,24 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-class userService {
+public class reviewService {
 
     @Autowired
-    private UserRepository userRepository;
+    private ReviewRepository reviewRepository;
 
-    public List<User> getAllUsers() {
-        return userRepository.findAll();
+    public List<Review> getAllReviews() {
+        return reviewRepository.findAll();
     }
 
-    public Optional<User> getUserById(UUID userId) {
-        return userRepository.findById(userId);
+    public Optional<Review> getReviewById(UUID reviewId) {
+        return reviewRepository.findById(reviewId);
     }
 
-    public User saveUser(User user) {
-        return userRepository.save(user);
+    public Review saveReview(Review review) {
+        return reviewRepository.save(review);
     }
 
-    public void deleteUser(UUID userId) {
-        userRepository.deleteById(userId);
+    public void deleteReview(UUID reviewId) {
+        reviewRepository.deleteById(reviewId);
     }
 }

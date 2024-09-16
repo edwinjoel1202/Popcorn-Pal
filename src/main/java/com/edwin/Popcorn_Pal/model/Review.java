@@ -16,21 +16,21 @@ import lombok.Setter;
  */
 
 @Entity
-@Table(name = "Review")
+@Table(name = "reviews")
 @Getter
 @Setter
 public class Review {
-    
+
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID reviewId;
 
     @ManyToOne
-    @JoinColumn(name = "movieId")
+    @JoinColumn(name = "movie_id", nullable = false)
     private Movie movie;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
+    @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
     @Column(nullable = false)

@@ -6,10 +6,9 @@ package com.edwin.Popcorn_Pal.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
+import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-
-
 
 /**
  *
@@ -17,26 +16,38 @@ import lombok.Setter;
  */
 
 @Entity
-@Table(name = "Movie")
+@Table(name = "movies")
 @Getter
 @Setter
 public class Movie {
     
     @Id
-    private int movieId;
-    
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private UUID movieId;
+
     @Column(nullable = false)
     private String title;
-    
+
     @Column
     private String releaseDate;
-    
+
     @Column
     private String posterUrl;
-    
+
     @Column
     private String description;
-    
-    @ManyToMany(mappedBy = "movies")
+
+    @ManyToMany(mappedBy = "watchlist")
+    private Set<User> users;
+
+    @ManyToMany
+    @JoinTable(
+        name = "movie_actors",
+        joinColumns = @JoinColumn(name = "movie_id"),
+        inverseJoinColumns = @JoinColumn(name = "actor_id")
+    )
     private Set<Actor> actors;
+
+    @OneToMany(mappedBy = "movie", cascade = CascadeType.ALL)
+    private Set<Review> reviews;
 }

@@ -48,4 +48,16 @@ public class movieController {
         Optional<Movie> movie = movieService.getMovieById(movieId);
         return movie.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
+    
+    @PostMapping
+    public ResponseEntity<Movie> addMovie(@RequestBody Movie movie) {
+        Movie savedMovie = movieService.saveMovie(movie);
+        return ResponseEntity.ok(savedMovie);
+    }
+
+    @DeleteMapping("/{movieId}")
+    public ResponseEntity<Void> deleteMovie(@PathVariable UUID movieId) {
+        movieService.deleteMovie(movieId);
+        return ResponseEntity.noContent().build();
+    }
 }

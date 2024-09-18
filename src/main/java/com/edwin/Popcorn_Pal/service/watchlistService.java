@@ -4,7 +4,11 @@
  */
 package com.edwin.Popcorn_Pal.service;
 
+import com.edwin.Popcorn_Pal.model.Movie;
+import com.edwin.Popcorn_Pal.model.User;
 import com.edwin.Popcorn_Pal.model.Watchlist;
+import com.edwin.Popcorn_Pal.repository.MovieRepository;
+import com.edwin.Popcorn_Pal.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import com.edwin.Popcorn_Pal.repository.WatchlistRepository;
 import java.util.List;
@@ -21,21 +25,35 @@ import org.springframework.stereotype.Service;
 @Transactional
 public class watchlistService {
 
-    @Autowired
+   @Autowired
     private WatchlistRepository watchlistRepository;
 
-    public List<Watchlist> getAllWatchlistItems() {
-        return watchlistRepository.findAll();
+    @Autowired
+    private MovieRepository movieRepository;
+
+    @Autowired
+    private UserRepository userRepository;
+
+    // Fetch all watchlist items for a specific user
+    public List<Watchlist> getWatchlistByUserId(UUID userId) {
+        return watchlistRepository.findByUser_UserId(userId);
     }
 
-    public Optional<Watchlist> getWatchlistById(UUID watchlistId) {
-        return watchlistRepository.findById(watchlistId);
+    // Save a new watchlist item (user adds a movie to their watchlist)
+    public Watchlist saveWatchlistItem(UUID userId, UUID movieId) {
+        Optional<User> user = userRepository.findById(userId);
+        Optional<Movie> movie = movieRepository.findById(movieId);
+        if (user.isPresent() && movie.isPresent()) {
+            Watchlist watchlist = new Watchlist();
+            watchlist.setUser(user.get());
+            watchlist.setMovie(movie.get());
+            return watchlistRepository.save(watchlist);
+        } else {
+            return null; // You could throw an exception here for invalid user or movie
+        }
     }
 
-    public Watchlist saveWatchlistItem(Watchlist watchlist) {
-        return watchlistRepository.save(watchlist);
-    }
-
+    // Delete a watchlist item
     public void deleteWatchlistItem(UUID watchlistId) {
         watchlistRepository.deleteById(watchlistId);
     }

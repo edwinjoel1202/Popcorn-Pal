@@ -20,24 +20,43 @@ import org.springframework.stereotype.Service;
 
 @Service
 @Transactional
-class userService {
+public class userService {
 
     @Autowired
     private UserRepository userRepository;
 
+    // Retrieve all users
     public List<User> getAllUsers() {
         return userRepository.findAll();
     }
 
+    // Find user by ID
     public Optional<User> getUserById(UUID userId) {
         return userRepository.findById(userId);
     }
 
+    // Find user by username
+    public Optional<User> getUserByUsername(String username) {
+        return userRepository.findByUsername(username);
+    }
+
+    // Register a new user
     public User saveUser(User user) {
+        // Password is saved as plain text for now
         return userRepository.save(user);
     }
 
+    // Delete a user
     public void deleteUser(UUID userId) {
         userRepository.deleteById(userId);
+    }
+
+    // Authenticate user based on username and password
+    public Optional<User> authenticateUser(String username, String password) {
+        Optional<User> user = userRepository.findByUsername(username);
+        if (user.isPresent() && user.get().getPassword().equals(password)) {
+            return user; // Authentication successful
+        }
+        return Optional.empty(); // Authentication failed
     }
 }

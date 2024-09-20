@@ -53,10 +53,10 @@ public class userController {
         }
     }
 
-    // Get user by ID
-    @GetMapping("/{id}")
-    public ResponseEntity<User> getUserById(@PathVariable UUID id) {
-        Optional<User> user = userService.getUserById(id);
+    // Get user by username
+    @GetMapping("/{username}")
+    public ResponseEntity<User> getUserByUsername(@PathVariable String username) {
+        Optional<User> user = userService.getUserByUsername(username);
         if (user.isPresent()) {
             return new ResponseEntity<>(user.get(), HttpStatus.OK);
         } else {
@@ -65,7 +65,7 @@ public class userController {
     }
     
     // Get all users (for administrative or development purposes)
-    @GetMapping
+    @GetMapping("/all_users")
     public ResponseEntity<List<User>> getAllUsers() {
         List<User> users = userService.getAllUsers();
         return new ResponseEntity<>(users, HttpStatus.OK);

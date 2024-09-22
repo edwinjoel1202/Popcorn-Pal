@@ -1,61 +1,58 @@
 package com.edwin.Popcorn_Pal.service;
 
 import com.edwin.Popcorn_Pal.model.Movie;
-import com.edwin.Popcorn_Pal.repository.MovieRepository;
-import jakarta.transaction.Transactional;
+import com.fasterxml.jackson.databind.JsonNode;
+import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 /**
  * Service class for managing movies.
  *
  * @author edwin
  */
+
 @Service
-@Transactional
 public class movieService {
 
-    @Autowired
-    private MovieRepository movieRepository;
+    private final String apiKey = "3d7ff50f7da5073a45fdf0e8da92e059"; // Replace with your TMDB API key
+    private final String TMDB_API_URL = "https://api.themoviedb.org/3";
+    private final RestTemplate restTemplate = new RestTemplate();
 
-    /**
-     * Fetches all movies from the database.
-     *
-     * @return List of movies.
-     */
-    public List<Movie> getAllMovies() {
-        return movieRepository.findAll();
+    // Get trending movies from TMDB
+    public List<Movie> getTrendingMoviesFromTMDB() {
+        String url = TMDB_API_URL + "/trending/movie/day?api_key=" + apiKey;
+        JsonNode response = restTemplate.getForObject(url, JsonNode.class);
+
+        List<Movie> trendingMovies = new ArrayList<>();
+        if (response != null && response.has("results")) {
+            for (JsonNode movieData : response.get("results")) {
+                Movie movie = new Movie();
+                movie.setTitle(movieData.get("title").asText());
+                movie.setPosterUrl("https://image.tmdb.org/t/p/w500" + movieData.get("poster_path").asText());
+                movie.setMovieId(UUID.randomUUID()); // Generate a unique ID
+                trendingMovies.add(movie);
+            }
+        }
+        return trendingMovies;
     }
 
-    /**
-     * Fetches a movie by its ID.
-     *
-     * @param movieId The UUID of the movie to find.
-     * @return An Optional containing the movie if found, or empty if not found.
-     */
-    public Optional<Movie> getMovieById(UUID movieId) {
-        return movieRepository.findById(movieId);
-    }
+    // Get movie by title from TMDB
+    public Movie getMovieByTitle(String title) {
+        String url = TMDB_API_URL + "/search/movie?query=" + title + "&api_key=" + apiKey;
+        JsonNode response = restTemplate.getForObject(url, JsonNode.class);
 
-    /**
-     * Saves a movie to the database.
-     *
-     * @param movie The movie to be saved.
-     * @return The saved movie entity.
-     */
-    public Movie saveMovie(Movie movie) {
-        return movieRepository.save(movie);
-    }
-
-    /**
-     * Deletes a movie from the database.
-     *
-     * @param movieId The UUID of the movie to be deleted.
-     */
-    public void deleteMovie(UUID movieId) {
-        movieRepository.deleteById(movieId);
+        if (response != null && response.has("results") && response.get("results").size() > 0) {
+            JsonNode movieData = response.get("results").get(0); // Get the first movie result
+            Movie movie = new Movie();
+            movie.setTitle(movieData.get("title").asText());
+            movie.setDescription(movieData.get("overview").asText());
+            movie.setPosterUrl("https://image.tmdb.org/t/p/w500" + movieData.get("poster_path").asText());
+            movie.setMovieId(UUID.randomUUID());
+            return movie;
+        }
+        return null;
     }
 }

@@ -25,6 +25,9 @@ public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private UUID userId;
+    
+    @Column(nullable = false)
+    private String name;
 
     @Column(nullable = false, unique = true)
     private String username;

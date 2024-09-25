@@ -6,11 +6,12 @@ package com.edwin.Popcorn_Pal.controller;
 
 import com.edwin.Popcorn_Pal.model.User;
 import com.edwin.Popcorn_Pal.service.userService;
-import java.util.List;
+//import java.util.List;
 import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -22,11 +23,11 @@ import org.springframework.web.bind.annotation.RestController;
  *
  * @author edwin
  */
-
 @RestController
 @RequestMapping("/api/users")
+@CrossOrigin(origins = "http://localhost:5173")
 public class userController {
-    
+
     @Autowired
     private userService userService;
 
@@ -41,14 +42,30 @@ public class userController {
         return new ResponseEntity<>("User registered successfully", HttpStatus.CREATED);
     }
 
-    // User login
     @PostMapping("/login")
-    public ResponseEntity<String> loginUser(@RequestBody User loginRequest) {
-        Optional<User> user = userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
-        if (user.isPresent()) {
-            return new ResponseEntity<>("Login successful", HttpStatus.OK);
-        } else {
-            return new ResponseEntity<>("Invalid username or password", HttpStatus.UNAUTHORIZED);
+    public userService.LoginResponse login(@RequestBody LoginRequest loginRequest) {
+        return userService.authenticateUser(loginRequest.getUsername(), loginRequest.getPassword());
+    }
+
+    public static class LoginRequest {
+
+        private String username;
+        private String password;
+
+        public String getUsername() {
+            return username;
+        }
+
+        public void setUsername(String username) {
+            this.username = username;
+        }
+
+        public String getPassword() {
+            return password;
+        }
+
+        public void setPassword(String password) {
+            this.password = password;
         }
     }
 
@@ -62,11 +79,11 @@ public class userController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
-    
+
     // Get all users (for administrative or development purposes)
-    @GetMapping("/all_users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userService.getAllUsers();
-        return new ResponseEntity<>(users, HttpStatus.OK);
-    }
+//    @GetMapping("/all_users")
+//    public ResponseEntity<List<User>> getAllUsers() {
+//        List<User> users = userService.getAllUsers();
+//        return new ResponseEntity<>(users, HttpStatus.OK);
+//    }
 }

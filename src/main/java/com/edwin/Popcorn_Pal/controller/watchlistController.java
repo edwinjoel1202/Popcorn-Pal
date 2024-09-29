@@ -41,7 +41,7 @@ public class watchlistController {
 
     // Add a movie to a user's watchlist
     @PostMapping("/{userId}/add/{movieId}")
-    public ResponseEntity<?> addMovieToWatchlist(@PathVariable UUID userId, @PathVariable UUID movieId) {
+    public ResponseEntity<?> addMovieToWatchlist(@PathVariable UUID userId, @PathVariable Long movieId) {
         Watchlist watchlistItem = watchlistService.saveWatchlistItem(userId, movieId);
         if (watchlistItem != null) {
             return ResponseEntity.ok(watchlistItem);

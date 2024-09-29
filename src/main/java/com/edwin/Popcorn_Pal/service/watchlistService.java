@@ -40,7 +40,7 @@ public class watchlistService {
     }
 
     // Save a new watchlist item (user adds a movie to their watchlist)
-    public Watchlist saveWatchlistItem(UUID userId, UUID movieId) {
+    public Watchlist saveWatchlistItem(UUID userId, Long movieId) {
         Optional<User> user = userRepository.findById(userId);
         Optional<Movie> movie = movieRepository.findById(movieId);
         if (user.isPresent() && movie.isPresent()) {

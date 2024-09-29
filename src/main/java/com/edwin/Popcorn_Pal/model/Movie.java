@@ -1,40 +1,30 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.edwin.Popcorn_Pal.model;
 
 import jakarta.persistence.*;
 import java.util.Set;
-import java.util.UUID;
 import lombok.Getter;
 import lombok.Setter;
-
-/**
- *
- * @author edwin
- */
 
 @Entity
 @Table(name = "movies")
 @Getter
 @Setter
 public class Movie {
-    
+
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID movieId;
+    @GeneratedValue(strategy = GenerationType.IDENTITY) // Use AUTO for UUID or IDENTITY for incrementing numbers
+    private Long movieId; // Changed from UUID to Long
 
     @Column(nullable = false)
     private String title;
 
-    @Column
+    @Column(nullable = false)
     private String releaseDate;
 
-    @Column
+    @Column(nullable = false)
     private String posterUrl;
 
-    @Column
+    @Column(nullable = false)
     private String description;
 
     @ManyToMany(mappedBy = "watchlist")

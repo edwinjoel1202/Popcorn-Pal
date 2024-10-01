@@ -37,4 +37,15 @@ public class movieController {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }
     }
+
+    // Get movie details by TMDB ID
+    @GetMapping("/details/{tmdbId}")
+    public ResponseEntity<JsonNode> getMovieDetailsByTMDBId(@PathVariable String tmdbId) {
+        JsonNode movieDetails = movieService.getMovieDetailsFromTMDB(tmdbId);
+        if (movieDetails != null) {
+            return new ResponseEntity<>(movieDetails, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(HttpStatus.NOT_FOUND);
+        }
+    }
 }

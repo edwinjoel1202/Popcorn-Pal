@@ -17,7 +17,7 @@ public class movieService {
     @Autowired
     private MovieRepository movieRepository;
 
-    private static final String TMDB_API_KEY = "3d7ff50f7da5073a45fdf0e8da92e059";
+    private static final String TMDB_API_KEY = "ec0e9ec87809bf77dbbe98c171b19b39";
     private static final String TMDB_TRENDING_URL = "https://api.themoviedb.org/3/trending/movie/day?api_key=" + TMDB_API_KEY;
     private static final String TMDB_MOVIE_DETAILS_URL = "https://api.themoviedb.org/3/movie/";
 

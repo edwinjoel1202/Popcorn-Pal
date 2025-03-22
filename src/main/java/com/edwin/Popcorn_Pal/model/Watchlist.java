@@ -21,7 +21,13 @@ public class Watchlist {
     @Column(name = "added_at", nullable = false)
     private LocalDateTime addedAt;
 
-    // Constructors
+    // Transient fields for frontend display (not persisted)
+    @Transient
+    private String title;
+
+    @Transient
+    private String posterPath;
+
     public Watchlist() {
     }
 
@@ -62,5 +68,21 @@ public class Watchlist {
 
     public void setAddedAt(LocalDateTime addedAt) {
         this.addedAt = addedAt;
+    }
+
+    public String getTitle() {
+        return title;
+    }
+
+    public void setTitle(String title) {
+        this.title = title;
+    }
+
+    public String getPosterPath() {
+        return posterPath;
+    }
+
+    public void setPosterPath(String posterPath) {
+        this.posterPath = posterPath;
     }
 }

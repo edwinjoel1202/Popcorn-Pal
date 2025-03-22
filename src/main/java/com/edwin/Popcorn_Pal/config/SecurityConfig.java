@@ -55,6 +55,7 @@ public class SecurityConfig {
                             .requestMatchers("/api/movies/top-rated").permitAll()
                             .requestMatchers("/api/movies/upcoming").permitAll()
                             .requestMatchers("/api/reviews").permitAll()
+                            .requestMatchers("/api/watchlist").permitAll()
                             .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                             .anyRequest().authenticated();
                 })

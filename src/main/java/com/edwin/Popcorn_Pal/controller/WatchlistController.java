@@ -10,6 +10,9 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+import java.util.UUID;
+
 @RestController
 @RequestMapping("/api/watchlist")
 @CrossOrigin(origins = "http://localhost:5173")
@@ -46,6 +49,31 @@ public class WatchlistController {
         } catch (Exception e) {
             logger.error("Error checking watchlist: {}", e.getMessage());
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping
+    public ResponseEntity<List<Watchlist>> getUserWatchlist() {
+        logger.info("Received request to fetch watchlist");
+        try {
+            String username = SecurityContextHolder.getContext().getAuthentication().getName();
+            List<Watchlist> watchlist = watchlistService.getUserWatchlist(username);
+            return ResponseEntity.ok(watchlist);
+        } catch (Exception e) {
+            logger.error("Error fetching watchlist: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @DeleteMapping("/{watchlistId}")
+    public ResponseEntity<String> deleteFromWatchlist(@PathVariable UUID watchlistId) {
+        logger.info("Received request to delete watchlist entry with ID: {}", watchlistId);
+        try {
+            watchlistService.deleteFromWatchlist(watchlistId);
+            return ResponseEntity.ok("Movie removed from watchlist");
+        } catch (Exception e) {
+            logger.error("Error deleting from watchlist: {}", e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error removing movie from watchlist");
         }
     }
 }

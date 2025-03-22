@@ -5,10 +5,13 @@ import com.edwin.Popcorn_Pal.service.ReviewService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/reviews")
@@ -46,6 +49,29 @@ public class ReviewController {
         } catch (Exception e) {
             logger.error("Error fetching reviews for movie ID {}: {}", tmdbMovieId, e.getMessage());
             return ResponseEntity.status(500).build();
+        }
+    }
+
+    @DeleteMapping("/{reviewId}")
+    public ResponseEntity<String> deleteReview(@PathVariable UUID reviewId) {
+        logger.info("Received request to delete review with ID: {}", reviewId);
+        try {
+            String currentUsername = SecurityContextHolder.getContext().getAuthentication().getName();
+            Review review = reviewService.getReviewById(reviewId);
+            if (review == null) {
+                logger.warn("Review with ID {} not found", reviewId);
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Review not found");
+            }
+            if (!review.getUsername().equals(currentUsername)) {
+                logger.warn("User {} attempted to delete review {} owned by {}", currentUsername, reviewId, review.getUsername());
+                return ResponseEntity.status(HttpStatus.FORBIDDEN).body("You can only delete your own reviews");
+            }
+            reviewService.deleteReview(reviewId);
+            logger.info("Review with ID {} deleted successfully", reviewId);
+            return ResponseEntity.ok("Review deleted successfully");
+        } catch (Exception e) {
+            logger.error("Error deleting review with ID {}: {}", reviewId, e.getMessage());
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error deleting review: " + e.getMessage());
         }
     }
 }

@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.UUID;
 
 @Service
 public class ReviewService {
@@ -40,5 +41,15 @@ public class ReviewService {
         List<Review> reviews = reviewRepository.findByTmdbMovieId(tmdbMovieId, pageable);
         logger.debug("Fetched {} reviews for movie ID: {}", reviews.size(), tmdbMovieId);
         return reviews;
+    }
+
+    // New method to get a review by ID
+    public Review getReviewById(UUID reviewId) {
+        return reviewRepository.findById(reviewId).orElse(null);
+    }
+
+    // New method to delete a review
+    public void deleteReview(UUID reviewId) {
+        reviewRepository.deleteById(reviewId);
     }
 }

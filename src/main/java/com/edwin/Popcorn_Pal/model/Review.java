@@ -1,22 +1,45 @@
-/*
- * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
- * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
- */
 package com.edwin.Popcorn_Pal.model;
 
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 import java.util.UUID;
 
-/**
- *
- * @author edwin
- */
-
 @Entity
 @Table(name = "reviews")
 public class Review {
 
+    @Id
+    @GeneratedValue
+    private UUID reviewId;
+
+    @Column(name = "tmdb_movie_id", nullable = false)
+    private Long tmdbMovieId;
+
+    @Column(name = "username", nullable = false)
+    private String username;
+
+    @Column(name = "rating", nullable = false)
+    private Double rating;
+
+    @Column(name = "review_text", nullable = false, length = 1000)
+    private String reviewText;
+
+    @Column(name = "created_at", nullable = false)
+    private LocalDateTime createdAt;
+
+    // Constructors
+    public Review() {
+    }
+
+    public Review(Long tmdbMovieId, String username, Double rating, String reviewText, LocalDateTime createdAt) {
+        this.tmdbMovieId = tmdbMovieId;
+        this.username = username;
+        this.rating = rating;
+        this.reviewText = reviewText;
+        this.createdAt = createdAt;
+    }
+
+    // Getters and Setters
     public UUID getReviewId() {
         return reviewId;
     }
@@ -25,27 +48,27 @@ public class Review {
         this.reviewId = reviewId;
     }
 
-    public Movie getMovie() {
-        return movie;
+    public Long getTmdbMovieId() {
+        return tmdbMovieId;
     }
 
-    public void setMovie(Movie movie) {
-        this.movie = movie;
+    public void setTmdbMovieId(Long tmdbMovieId) {
+        this.tmdbMovieId = tmdbMovieId;
     }
 
-    public User getUser() {
-        return user;
+    public String getUsername() {
+        return username;
     }
 
-    public void setUser(User user) {
-        this.user = user;
+    public void setUsername(String username) {
+        this.username = username;
     }
 
-    public int getRating() {
+    public Double getRating() {
         return rating;
     }
 
-    public void setRating(int rating) {
+    public void setRating(Double rating) {
         this.rating = rating;
     }
 
@@ -64,25 +87,4 @@ public class Review {
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
     }
-
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    private UUID reviewId;
-
-    @ManyToOne
-    @JoinColumn(name = "movie_id", nullable = false)
-    private Movie movie;
-
-    @ManyToOne
-    @JoinColumn(name = "user_id", nullable = false)
-    private User user;
-
-    @Column(nullable = false)
-    private int rating;
-
-    @Column
-    private String reviewText;
-
-    @Column(nullable = false)
-    private LocalDateTime createdAt = LocalDateTime.now();
 }

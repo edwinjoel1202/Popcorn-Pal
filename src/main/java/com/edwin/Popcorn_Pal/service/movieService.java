@@ -1,7 +1,5 @@
 package com.edwin.Popcorn_Pal.service;
 
-import com.edwin.Popcorn_Pal.model.Movie;
-import com.edwin.Popcorn_Pal.repository.MovieRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,8 +16,6 @@ public class movieService {
 
     private static final Logger logger = LoggerFactory.getLogger(movieService.class);
 
-    @Autowired
-    private MovieRepository movieRepository;
 
     @Autowired
     private RestTemplate restTemplate;
@@ -64,11 +60,6 @@ public class movieService {
             logger.error("Failed to fetch movie details for ID {}: {}", movieId, e.getMessage());
             throw new RuntimeException("Error fetching movie details: " + e.getMessage());
         }
-    }
-
-    public Movie saveMovie(Movie movie) {
-        logger.info("Saving movie with ID: {}", movie.getMovieId());
-        return movieRepository.save(movie);
     }
 
     public List<Object> getNowPlayingMovies() {

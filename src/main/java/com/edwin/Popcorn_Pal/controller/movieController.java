@@ -8,6 +8,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movies")
@@ -94,6 +95,22 @@ public class movieController {
         } catch (Exception e) {
             logger.error("Error fetching Upcoming movies: {}", e.getMessage());
             return ResponseEntity.status(500).body(null);
+        }
+    }
+
+    // New search endpoint
+    @GetMapping("/search")
+    public ResponseEntity<List<Map<String, Object>>> searchMovies(
+            @RequestParam("query") String query,
+            @RequestParam(value = "page", defaultValue = "1") int page) {
+        logger.info("Received search request for query: {}", query);
+        try {
+            List<Map<String, Object>> searchResults = movieService.searchMovies(query, page);
+            logger.debug("Returning {} search results for query: {}", searchResults.size(), query);
+            return ResponseEntity.ok(searchResults);
+        } catch (Exception e) {
+            logger.error("Error fetching search results for query {}: {}", query, e.getMessage());
+            return ResponseEntity.status(500).body(List.of());
         }
     }
 }

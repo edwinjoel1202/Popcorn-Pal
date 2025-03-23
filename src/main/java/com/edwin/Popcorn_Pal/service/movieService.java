@@ -137,4 +137,18 @@ public class movieService {
             throw new RuntimeException("Error fetching Upcoming movies: " + e.getMessage());
         }
     }
+
+    public List<Map<String, Object>> searchMovies(String query, int page) {
+        String url = String.format(
+                "https://api.themoviedb.org/3/search/movie?api_key=%s&query=%s&include_adult=false&language=en-US&page=%d",
+                tmdbApiKey, query, page
+        );
+        logger.info("Fetching search results for query: {} with URL: {}", query, url);
+        Map<String, Object> response = restTemplate.getForObject(url, Map.class);
+        if (response == null || !response.containsKey("results")) {
+            logger.warn("No results found for query: {}", query);
+            return List.of();
+        }
+        return (List<Map<String, Object>>) response.get("results");
+    }
 }

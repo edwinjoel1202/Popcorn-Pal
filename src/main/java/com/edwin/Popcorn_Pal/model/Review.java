@@ -27,6 +27,10 @@ public class Review {
     @Column(name = "created_at", nullable = false)
     private LocalDateTime createdAt;
 
+    // New column for sentiment tag
+    @Column(name = "tag", nullable = true) // Can be nullable initially
+    private String tag;
+
     // Constructors
     public Review() {
     }
@@ -86,5 +90,14 @@ public class Review {
 
     public void setCreatedAt(LocalDateTime createdAt) {
         this.createdAt = createdAt;
+    }
+
+    // Getter and Setter for tag
+    public String getTag() {
+        return tag;
+    }
+
+    public void setTag(String tag) {
+        this.tag = tag;
     }
 }

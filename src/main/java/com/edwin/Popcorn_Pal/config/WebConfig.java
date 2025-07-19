@@ -11,14 +11,18 @@ package com.edwin.Popcorn_Pal.config;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.web.servlet.config.annotation.CorsRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
+import org.springframework.beans.factory.annotation.Value;
 
 @Configuration
 public class WebConfig implements WebMvcConfigurer {
 
+    @Value("${frontend.url}")
+    private String frontendUrl;
+
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/api/**") // Change this to match your API endpoints
-                .allowedOrigins("http://localhost:5173") // Your React app's URL
+                .allowedOrigins(frontendUrl) // Your React app's URL
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
                 .allowedHeaders("*");
     }

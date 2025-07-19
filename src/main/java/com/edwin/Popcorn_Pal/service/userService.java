@@ -7,6 +7,7 @@ import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.security.Keys;
 import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -26,7 +27,9 @@ public class userService {
     @Autowired
     private BCryptPasswordEncoder passwordEncoder;
 
-    private static final String SECRET_KEY = "your-secret-key-at-least-32-bytes-long"; // Must be 32+ bytes for HS512
+    @Value("${jwt.secret.key}")
+    private String secretKey;
+
 
     public Optional<User> getUserByUsername(String username) {
         return userRepository.findByUsername(username);
@@ -58,7 +61,7 @@ public class userService {
     }
 
     private String generateJwtToken(User user) {
-        Key key = Keys.hmacShaKeyFor(SECRET_KEY.getBytes(StandardCharsets.UTF_8));
+        Key key = Keys.hmacShaKeyFor(secretKey.getBytes(StandardCharsets.UTF_8));
         return Jwts.builder()
             .subject(user.getUsername())
             .issuedAt(new Date())

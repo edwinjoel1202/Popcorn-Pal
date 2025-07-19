@@ -12,7 +12,6 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/api/movies")
-@CrossOrigin(origins = "http://localhost:5173") // Adjust port if your frontend uses a different one
 public class movieController {
 
     private static final Logger logger = LoggerFactory.getLogger(movieController.class);

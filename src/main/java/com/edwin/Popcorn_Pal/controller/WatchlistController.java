@@ -15,7 +15,6 @@ import java.util.UUID;
 
 @RestController
 @RequestMapping("/api/watchlist")
-@CrossOrigin(origins = "http://localhost:5173")
 public class WatchlistController {
 
     private static final Logger logger = LoggerFactory.getLogger(WatchlistController.class);

@@ -9,5 +9,4 @@ public class PopcornPalApplication {
 	public static void main(String[] args) {
 		SpringApplication.run(PopcornPalApplication.class, args);
 	}
-
 }
